@@ -16,20 +16,20 @@ createParser(SaveGame):
   lu8: save_game_data[199996]
   lu32: crc32
 
-proc pack(save_file_path: string, json_file_path: string, verbose: bool): int =
+proc pack(save_file_path: string, bin_file_path: string, verbose: bool): int =
   var save_file_stream = newFileStream(save_file_path, fmWrite)
   if isNil(save_file_stream):
     echo "Cannot open save file for writing"
     return 1
 
-  var json_file_stream = newFileStream(json_file_path, fmRead)
-  if isNil(json_file_stream):
-    echo "Cannot open json file for reading"
+  var bin_file_stream = newFileStream(bin_file_path, fmRead)
+  if isNil(bin_file_stream):
+    echo "Cannot open bin file for reading"
     return 1
 
   var decompressed_data = newSeq[uint8]()
-  while not json_file_stream.atEnd:
-    decompressed_data.add(json_file_stream.readUint8())
+  while not bin_file_stream.atEnd:
+    decompressed_data.add(bin_file_stream.readUint8())
 
   var compressed_data = encode(decompressed_data)
 
@@ -72,15 +72,15 @@ proc pack(save_file_path: string, json_file_path: string, verbose: bool): int =
 
   0
 
-proc unpack(save_file_path: string, json_file_path: string, verbose: bool): int =
+proc unpack(save_file_path: string, bin_file_path: string, verbose: bool): int =
   var save_file_stream = newFileStream(save_file_path, fmRead)
   if isNil(save_file_stream):
     echo "Cannot open save file for reading"
     return 1
 
-  var json_file_stream = newFileStream(json_file_path, fmWrite)
-  if isNil(json_file_stream):
-    echo "Cannot open json file for writing"
+  var bin_file_stream = newFileStream(bin_file_path, fmWrite)
+  if isNil(bin_file_stream):
+    echo "Cannot open bin file for writing"
     return 1
 
   let save_game = SaveGame.get(save_file_stream)
@@ -113,7 +113,7 @@ proc unpack(save_file_path: string, json_file_path: string, verbose: bool): int 
 
   var decompressed_data = decode(save_game_data.compressed_data, save_game_data.decompressed_size)
 
-  json_file_stream.write(cast[string](decompressed_data))
+  bin_file_stream.write(cast[string](decompressed_data))
 
   0
 
@@ -122,13 +122,13 @@ type
     pack, unpack
 
 proc fse(operation: Operation, save_file_path = "FUEL_SAVE_V14.sav",
-    json_file_path = "FUEL_SAVE_V14.sav.json", verbose: bool = false): int =
+    bin_file_path = "FUEL_SAVE_V14.sav.bin", verbose: bool = false): int =
   case operation
-  of Operation.pack: pack(save_file_path, json_file_path, verbose)
-  of Operation.unpack: unpack(save_file_path, json_file_path, verbose)
+  of Operation.pack: pack(save_file_path, bin_file_path, verbose)
+  of Operation.unpack: unpack(save_file_path, bin_file_path, verbose)
 
 import cligen; dispatch fse, help={
   "operation" : "operation `[pack|unpack]`",
   "save_file_path" : "path to the save file",
-  "json_file_path" : "path to the json file",
+  "bin_file_path" : "path to the bin file",
   "verbose": "enable extra output"}
