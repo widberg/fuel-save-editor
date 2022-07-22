@@ -49,7 +49,9 @@ jobs:
         nim-version: stable
 
     - name: Build
-      run: nim cc -o="${{ matrix.executable_name }}" src/main.nim
+      run: |
+        nimble install -y
+        nim cc -o="${{ matrix.executable_name }}" src/main.nim
 
     - name: Create Archive
       run: tar -czvf fse-${{ matrix.name }}-${{ github.sha }}.tar.gz ${{ matrix.executable_name }} README.md

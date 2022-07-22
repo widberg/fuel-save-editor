@@ -26,4 +26,6 @@ jobs:
         nim-version: stable
 
     - name: Build
-      run: nim cc src/main.nim
+      run: |
+        nimble install -y
+        nim cc src/main.nim
