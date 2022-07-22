@@ -20,7 +20,7 @@ fse -o=p
 
 For more options see the help section.
 
-The extracted `.bin` file can be edited with 010 Editor using the template on the [Asobo Save Game File Format Specification FMTK Wiki entry](https://github.com/widberg/fmtk/wiki/Asobo-Save-Game-File-Format-Specification). Once most of the fields are known, I may add a json export option and/or a GUI editor.
+The extracted `.bin` file can be edited with 010 Editor using the template on the [Asobo Save Game File Format Specification FMTK Wiki entry](https://github.com/widberg/fmtk/wiki/Asobo-Save-Game-File-Format-Specification). Once most of the fields are known, I may add a json export option and/or a GUI editor. More details about the compression used for the save files is available on the [Asobo Arithmetic Coding Compression FMTK Wiki entry](https://github.com/widberg/fmtk/wiki/Asobo-Arithmetic-Coding-Compression).
 
 ## Help
 
@@ -33,6 +33,6 @@ Options:
                                                                prepend,plurals,..
   -o=, --operation=       Operation  REQUIRED                  operation `[pack|unpack]`
   -s=, --save_file_path=  string     "FUEL_SAVE_V14.sav"       path to the save file
-  -b=, --bin_file_path=   string     "FUEL_SAVE_V14.sav.bin"    path to the bin file
+  -b=, --bin_file_path=   string     "FUEL_SAVE_V14.sav.bin"   path to the bin file
   -v, --verbose           bool       false                     enable extra output
 ```
