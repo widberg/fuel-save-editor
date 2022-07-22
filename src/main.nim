@@ -127,8 +127,14 @@ proc fse(operation: Operation, save_file_path = "FUEL_SAVE_V14.sav",
   of Operation.pack: pack(save_file_path, bin_file_path, verbose)
   of Operation.unpack: unpack(save_file_path, bin_file_path, verbose)
 
-import cligen; dispatch fse, help={
-  "operation" : "operation `[pack|unpack]`",
-  "save_file_path" : "path to the save file",
-  "bin_file_path" : "path to the bin file",
-  "verbose": "enable extra output"}
+import cligen; include cligen/mergeCfgEnv;
+const nimbleFile = staticRead "../fse.nimble"
+clCfg.version = nimbleFile.fromNimble "version"
+dispatch fse,
+  short={
+    "version" : 'V'},
+  help={
+    "operation" : "operation `[pack|unpack]`",
+    "save_file_path" : "path to the save file",
+    "bin_file_path" : "path to the bin file",
+    "verbose": "enable extra output"}
